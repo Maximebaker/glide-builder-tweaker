@@ -1,0 +1,11 @@
+{
+  "version": "0.1.0",
+  "author": "Maxime Baker Consultant Informatique",
+  "id": "tables-folders",
+  "name": "Tables Folders (Dev)",
+  "description": "Organize your tables in folders. Simply add a slash (/) in the name of your table to create a folder. Just like columns in Glide Tables.",
+  "flag": "🛑 Warning: This is a development version. It is highly unstable and may contain critical issues. Use with caution and at your own risk.",
+  "flagType": "danger",
+  "docLink": "https://maximebaker.com/",
+  "reloadOnDisable": true
+}
