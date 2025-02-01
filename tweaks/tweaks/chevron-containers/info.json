@@ -1,9 +1,0 @@
-{
-    "version": "1.0.3",
-    "author": "Maxime Baker Consultant Informatique",
-    "id": "chevron-containers",
-    "name": "Chevron Containers",
-    "description": "Add chevrons to containers in the Glide Builder.",
-    "docLink": "https://maximebaker.com/",
-    "reloadOnDisable": true
-}
