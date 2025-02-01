@@ -1,0 +1,9 @@
+{
+    "version": "1.0.0",
+    "author": "Maxime Baker Consultant Informatique",
+    "id": "hide-contact-sales",
+    "name": "Hide Contact Sales",
+    "description": "Just hide the Contact Sales button.",
+    "docLink": "https://maximebaker.com/",
+    "reloadOnDisable": true
+}
