@@ -4,7 +4,7 @@ const Tweak = (() => {
   let restructuredWorkflows = {};
 
   function getWorkflowSidebarSelector() {
-    return "div.action-editor-sidebar___StyledDiv5-sc-61rmx6-6";
+    return "div.action-editor-sidebar___StyledDiv5-sc-61rmx6-6 div.content-container div.section-wrapper div.section-content";
   }
 
   let workflowsSidebarObserved = false;
@@ -33,6 +33,22 @@ const Tweak = (() => {
     });
   }
 
+  function getWorkflowTitleElement(element) {
+    // Cibler le deuxième div à l'intérieur de l'élément (la deuxième div sous le deuxième div enfant)
+    const divs = element.querySelectorAll("div > div > div"); // Cibler les div imbriquées comme spécifié
+
+    if (divs.length >= 2) {
+      const secondDiv = divs[1]; // Sélectionner la deuxième div
+      const textContent = secondDiv.textContent.trim();
+
+      if (textContent) {
+        return secondDiv; // Retourner le div contenant le texte
+      }
+    }
+
+    return null; // Si aucun texte n'est trouvé
+  }
+
   function observeSection(sidebar) {
     if (!sidebar) {
       if (sectionObserver) sectionObserver.disconnect();
@@ -47,15 +63,13 @@ const Tweak = (() => {
             if (
               addedNode.nodeType === Node.ELEMENT_NODE &&
               addedNode.tagName === "DIV" &&
-              addedNode.classList.contains("sc-dZoequ") &&
-              addedNode.classList.contains("cQddCI")
+              // addedNode.classList.contains("sc-dZoequ") &&
+              // addedNode.classList.contains("cQddCI")
+              /^bld-drag-item-/.test(addedNode.getAttribute("data-test"))
             ) {
-              if (
-                restructuredWorkflows[
-                  addedNode.querySelector(".sc-eZkCL.hGbbOY").textContent.trim()
-                ]
-              )
-                return;
+              const title =
+                getWorkflowTitleElement(addedNode).textContent.trim();
+              if (restructuredWorkflows[title]) return;
               // AddFeatureToGlideBuilder(sidebar);
               // console.log("added");
             }
@@ -73,23 +87,23 @@ const Tweak = (() => {
   }
 
   function AddFeatureToGlideBuilder(section) {
-    let workflows = section.querySelectorAll(".sc-dZoequ.cQddCI");
+    // let workflows = section.querySelectorAll(".sc-dZoequ.cQddCI");
+    let workflows = section.querySelectorAll("div[data-test='bld-drag-item-']");
 
     const newStructure = {};
 
     let workflowsNeedRestructuring = false;
     // Step 1: Build the new structure
     workflows.forEach((element) => {
-      const titleDiv = element.querySelector(".sc-eZkCL.hGbbOY");
+      const title = getWorkflowTitleElement(element).textContent.trim();
 
-      if (titleDiv) {
-        const fullTitle = titleDiv.textContent.trim();
-        const [folder, ...nameParts] = fullTitle.split("/");
+      if (title) {
+        const [folder, ...nameParts] = title.split("/");
         const name = nameParts.join("/");
 
-        if (restructuredWorkflows[fullTitle]) return;
+        if (restructuredWorkflows[title]) return;
 
-        restructuredWorkflows[fullTitle] = {
+        restructuredWorkflows[title] = {
           folder,
           name,
           element,
@@ -113,12 +127,10 @@ const Tweak = (() => {
           }
 
           // Add the element to the root with the original title
-          newStructure["Root"].push({ element, name: fullTitle });
+          newStructure["Root"].push({ element, name: title });
         }
       }
     });
-
-    // console.log(workflowsNeedRestructuring, restructuredWorkflows);
 
     if (!workflowsNeedRestructuring) return;
 
@@ -168,7 +180,7 @@ const Tweak = (() => {
           parentElement.removeChild(element); // Remove from original location
 
           // Modify the title of the element
-          const titleDiv = element.querySelector(".sc-eZkCL.hGbbOY");
+          const titleDiv = getWorkflowTitleElement(element);
           if (titleDiv) {
             titleDiv.textContent = name; // Update the title with the new name
           }
@@ -183,7 +195,7 @@ const Tweak = (() => {
         // Handle root elements (without "/")
         items.forEach(({ element, name }) => {
           // No move, just update the name
-          const titleDiv = element.querySelector(".sc-eZkCL.hGbbOY");
+          const titleDiv = getWorkflowTitleElement(element);
           if (titleDiv) {
             titleDiv.textContent = name; // Update the title with the new name
           }
@@ -199,7 +211,9 @@ const Tweak = (() => {
     });
 
     // Step 4: Apply the new structure to the DOM
-    const root = document.querySelector(".sc-kAkpmW.fXcken .section-content"); // Assuming a root container exists
+    const root = document.querySelector(
+      ".action-editor-sidebar___StyledDiv5-sc-61rmx6-6 .content-container .section-content"
+    ); // Assuming a root container exists
 
     // Step 5: Clear the root and append the new structure
     root.innerHTML = ""; // Clear existing structure
