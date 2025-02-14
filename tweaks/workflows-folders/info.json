@@ -1,11 +1,8 @@
 {
-  "version": "1.0.0-alpha.2",
-  "author": "Maxime Baker Consultant Informatique",
   "id": "workflows-folders",
-  "name": "Workflows Folders (Alpha)",
+  "name": "Workflows Folders",
   "description": "Organize your workflows in folders. Simply add a slash (/) in the name of your workflow to create a folder. Just like columns in Glide Tables.",
-  "flag": "⚠️ Warning: This is an alpha version. Use at your own risk.",
-  "flagType": "warning",
-  "docLink": "https://maximebaker.com/",
-  "reloadOnDisable": true
+  "flag": "✅Now native!",
+  "flagType": "success",
+  "native":true
 }
