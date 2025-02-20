@@ -1,8 +1,0 @@
-{
-  "id": "workflows-folders",
-  "name": "Workflows Folders",
-  "description": "Organize your workflows in folders. Simply add a slash (/) in the name of your workflow to create a folder. Just like columns in Glide Tables.",
-  "flag": "✅Now native!",
-  "flagType": "success",
-  "native":true
-}
